@@ -10,4 +10,6 @@
 
         <button>Logout</button>
     </form>
+
+    <two-factor-auth />
 @endsection
