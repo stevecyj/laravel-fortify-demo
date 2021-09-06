@@ -44,6 +44,10 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        /**
+         * tell Fortify to use these views as our new auth pages
+         */
+
         Fortify::loginView(function () {
             return view('auth.login');
         });
@@ -52,12 +56,13 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
-        Fortify::requestPasswordResetLinkView(function () {
-            return view('auth.forgot-password');
-        });
 
-        Fortify::resetPasswordView(function () {
-            return view('auth.reset-password');
-        });
+        // Fortify::requestPasswordResetLinkView(function () {
+        //     return view('auth.forgot-password');
+        // });
+
+        // Fortify::resetPasswordView(function () {
+        //     return view('auth.reset-password');
+        // });
     }
 }
