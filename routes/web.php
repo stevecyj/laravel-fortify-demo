@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::middleware('auth')->get('home', function () {
     return view('home');
 });
+
+Route::get('/getCSRFToken',function(){
+    return csrf_token();
+});

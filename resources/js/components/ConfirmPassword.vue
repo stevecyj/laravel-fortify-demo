@@ -19,13 +19,13 @@ export default {
     data() {
         return {
             confirmingPassword: false,
-            password: "",
+            password: ""
         };
     },
 
     methods: {
         startConfirmingPassword() {
-            axios.get("/user/confirmed-password-status").then((response) => {
+            axios.get("user/confirmed-password-status").then(response => {
                 if (response.data.confirmed) {
                     this.$emit("confirmed");
                 } else {
@@ -36,14 +36,14 @@ export default {
 
         confirmPassword() {
             axios
-                .post("/user/confirm-password", {
-                    password: this.password,
+                .post("user/confirm-password", {
+                    password: this.password
                 })
-                .then((response) => {
+                .then(response => {
                     this.confirmingPassword = false;
                     this.$emit("confirmed");
                 });
-        },
-    },
+        }
+    }
 };
 </script>

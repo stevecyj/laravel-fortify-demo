@@ -5223,7 +5223,7 @@ __webpack_require__.r(__webpack_exports__);
     startConfirmingPassword: function startConfirmingPassword() {
       var _this = this;
 
-      axios.get("/user/confirmed-password-status").then(function (response) {
+      axios.get("user/confirmed-password-status").then(function (response) {
         if (response.data.confirmed) {
           _this.$emit("confirmed");
         } else {
@@ -5234,7 +5234,7 @@ __webpack_require__.r(__webpack_exports__);
     confirmPassword: function confirmPassword() {
       var _this2 = this;
 
-      axios.post("/user/confirm-password", {
+      axios.post("user/confirm-password", {
         password: this.password
       }).then(function (response) {
         _this2.confirmingPassword = false;
@@ -5269,10 +5269,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     ConfirmPassword: _ConfirmPassword__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {
+    enabled: {
+      type: Boolean,
+      "default": false
+    }
+  },
+  data: function data() {
+    return {
+      twoFactorEnabled: this.enabled,
+      qrCode: ""
+    };
+  },
+  methods: {
+    enableTwoFactorAuthentication: function enableTwoFactorAuthentication() {
+      var _this = this;
+
+      axios.post("user/two-factor-authentication").then(function () {
+        return Promise.all([_this.showQrCode()]);
+      }).then(function () {
+        _this.twoFactorEnabled = true;
+      });
+    },
+    showQrCode: function showQrCode() {
+      var _this2 = this;
+
+      return axios.get("user/two-factor-qr-code").then(function (response) {
+        _this2.qrCode = response.data.svg;
+      });
+    },
+    disableTwoFactorAuthentication: function disableTwoFactorAuthentication() {
+      var _this3 = this;
+
+      axios["delete"]("user/two-factor-authentication").then(function () {
+        _this3.twoFactorEnabled = false;
+        _this3.qrCode = "";
+      });
+    }
   }
 });
 
@@ -41521,7 +41570,33 @@ var render = function() {
     [
       _c("h2", [_vm._v("Two Factor Authentication")]),
       _vm._v(" "),
-      _c("confirm-password", [_c("button", [_vm._v("Enable")])])
+      _vm.qrCode
+        ? _c("div", { domProps: { innerHTML: _vm._s(_vm.qrCode) } })
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.twoFactorEnabled
+        ? _c(
+            "confirm-password",
+            {
+              on: {
+                confirmed: function($event) {
+                  return _vm.enableTwoFactorAuthentication()
+                }
+              }
+            },
+            [_c("button", [_vm._v("Enable")])]
+          )
+        : _c(
+            "confirm-password",
+            {
+              on: {
+                confirmed: function($event) {
+                  return _vm.disableTwoFactorAuthentication()
+                }
+              }
+            },
+            [_c("button", [_vm._v("\n            Disable\n        ")])]
+          )
     ],
     1
   )
@@ -53697,7 +53772,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"axios","version":"0.21.3","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.3","/var/www/html/laravel-fortify-demo"]],"_development":true,"_from":"axios@0.21.3","_id":"axios@0.21.3","_inBundle":false,"_integrity":"sha512-JtoZ3Ndke/+Iwt5n+BgSli/3idTvpt5OjKyoCmz4LX5+lPiY5l7C1colYezhlxThjNa/NhngCUWZSZFypIFuaA==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.3","name":"axios","escapedName":"axios","rawSpec":"0.21.3","saveSpec":null,"fetchSpec":"0.21.3"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.3.tgz","_spec":"0.21.3","_where":"/var/www/html/laravel-fortify-demo","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.3"}');
 
 /***/ })
 
